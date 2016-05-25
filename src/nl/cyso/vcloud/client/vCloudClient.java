@@ -80,7 +80,7 @@ public class vCloudClient {
 	}
 
 	public void login(String uri, String username, String password) {
-		VcloudClient.setLogLevel(Level.OFF);
+		VcloudClient.setLogLevel(Level.ALL);
 		this.vcc = new VcloudClient(uri, Version.V1_5);
 		try {
 			this.vcc.registerScheme("https", 443, FakeSSLSocketFactory.getInstance());
