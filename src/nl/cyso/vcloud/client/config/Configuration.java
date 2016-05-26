@@ -44,7 +44,7 @@ public class Configuration {
 
 	private static final String[] connection = new String[] { "server", "username", "password" };
 	private static final String[] selectors = new String[] { "organization", "vdc", "vapp", "vm", "catalog" };
-	private static final String[] input = new String[] { "fqdn", "description", "template", "network", "ip", "disk-name", "disk-size" };
+	private static final String[] input = new String[] { "fqdn", "description", "template", "network", "ip", "disk-name", "disk-size","ip-address-allocation-mode" };
 
 	private static Map<String, Object> configuration = new HashMap<String, Object>();
 
@@ -287,7 +287,17 @@ public class Configuration {
 	public static void setDiskSize(String disksize) {
 		Configuration.set("disk-size", new BigInteger(disksize));
 	}
+	public static boolean hasIpAddressAllocationMode() {
+		return Configuration.has("ip-address-allocation-mode");
+	}
 
+	public static String getIpAddressAllocationMode() {
+		return (String) Configuration.valueOrNull("ip-address-allocation-mode");
+	}
+
+	public static void setIpAddressAllocationMode(String ipAddressAllocationMode) {
+		Configuration.set("ip-address-allocation-mode", ipAddressAllocationMode);
+	}
 	public static CommandLine parseCli(ModeType mode, String[] args) {
 		CommandLine cli = null;
 		Options opt = ConfigModes.getMode(mode);
@@ -351,6 +361,9 @@ public class Configuration {
 					}
 				} else if (opt.getLongOpt().equals("disk-size")) {
 					Configuration.setDiskSize(cli.getOptionValue(opt.getLongOpt()));
+				} else if (opt.getLongOpt().equals("ip-address-allocation-mode")) {
+					Configuration.setIpAddressAllocationMode(cli.getOptionValue(opt.getLongOpt()));
+
 				} else {
 					Configuration.set(opt.getLongOpt(), cli.getOptionValue(opt.getLongOpt()));
 				}
@@ -430,6 +443,7 @@ public class Configuration {
 
 		dump.append("User input: \n");
 		for (String in : Configuration.input) {
+System.err.println(in);
 			if (Configuration.has(in) && mode.hasOption(in)) {
 				if (in.equals("ip")) {
 					dump.append(String.format("\t %s: %s\n", in, ((InetAddress) Configuration.valueOrNull(in)).getHostAddress()));

@@ -485,7 +485,10 @@ public class vCloudClient {
 		return t;
 	}
 
-	public Task addVM(String org, String vdc, String vapp, String catalog, String template, String fqdn, String description, String ip, String network) {
+	public Task addVM(String org, String vdc, String vapp, String catalog, String template, String fqdn, String description, String ip, String network, String ipAddressAllocationMode) {
+System.err.println("ipAddressAllocationMode : " + ipAddressAllocationMode);
+if( true)
+return null;
 		this.vccPreCheck();
 
 		Vapp vappObj = this.getVApp(org, vdc, vapp);
@@ -524,7 +527,9 @@ public class vCloudClient {
 		NetworkConnectionType nw = new NetworkConnectionType();
 		nw.setIpAddress(ip);
 		nw.setMACAddress(null);
-		nw.setIpAddressAllocationMode("MANUAL");
+
+		Formatter.printInfoLine("Set IP Address Allocation Mode: " + ipAddressAllocationMode);
+		nw.setIpAddressAllocationMode(ipAddressAllocationMode);
 		nw.setNetwork(network);
 		nw.setIsConnected(true);
 
